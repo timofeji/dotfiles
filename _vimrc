@@ -3,11 +3,16 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
 			\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim   
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC 
-
 endif
 	
 "Auto reload of vimrc
 autocmd! bufwritepost .vimrc source %
+
+
+
+
+
+
 
 
 
@@ -18,11 +23,8 @@ call plug#begin('~/.vim/plugged')
 "vim-easy-align"
 Plug 'junegunn/vim-easy-align'
 
-"Molokai Colorschem
-Plug 'tomasr/molokai'
-
-"ultisnips"
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" Vim-Snipmate for snippets
+Plug 'garbas/vim-snipmate'| Plug 'tomtom/tlib_vim'| Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'honza/vim-snippets'
 
 "NerdTree
 Plug 'scrooloose/nerdtree'
@@ -32,6 +34,9 @@ Plug 'tpope/vim-surround'
 
 "Git Gutter
 Plug 'airblade/vim-gitgutter'
+
+"Code commenting
+Plug 'scrooloose/nerdcommenter'
 
 "Colorscheme
 Plug 'sjl/badwolf'
@@ -44,33 +49,24 @@ call plug#end()
 
 
 
-"""""""""" Plugin Configuration
-
-""""Ultisnips
-let g:UltiSnipsSnippetsDir = '~/.vim/plugged/vim-snippets/UltiSnips'
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-let g:UltiSnipsListSnippets="<c-l>"
 
 
-inoremap <silent> <C-j> <C-r>=LoadUltiSnips()<cr>
 
-" This function only runs when UltiSnips is not loaded
-function! LoadUltiSnips()
-    let l:curpos = getcurpos()
-    execute plug#load('ultisnips')
-    call cursor(l:curpos[1], l:curpos[2])
-    call UltiSnips#ExpandSnippet()
-    return ""
-endfunction
+
 
 
 """"NerdTree
 nnoremap <silent> <F4> :NERDTreeToggle<CR>
 nnoremap <silent> <F5> :NERDTreeFind<CR>
 
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$','node_modules']
+
+
+
+
+
+
+
 
 
 
@@ -84,15 +80,13 @@ set showmatch
 set incsearch
 set hlsearch
 set smartindent
-set paste
-set nocompatible
+set nopaste
 set autoindent
 set breakindent
 set smarttab
 set noswapfile
 set backup
 set undofile
-set backspace=1
 set backupdir=~/.vim/dirs/backup
 set undodir=~/.vim/dirs/undo
 
@@ -114,7 +108,7 @@ if !has("gui_running")
     let &t_AF="\e[38;5;%dm"
     colorscheme badwolf
 endif
-
+			
 
 
 

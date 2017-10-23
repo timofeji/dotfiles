@@ -14,9 +14,6 @@ autocmd! bufwritepost .vimrc source %
 
 
 
-
-
-
 """""""""" Pluggins 
 call plug#begin('~/.vim/plugged')
 
@@ -24,9 +21,21 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
 
 " Vim-Snipmate for snippets
-Plug 'garbas/vim-snipmate'| Plug 'tomtom/tlib_vim'| Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'honza/vim-snippets'
+"Plug 'garbas/vim-snipmate'| Plug 'tomtom/tlib_vim'| Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'honza/vim-snippets'
 
-"NerdTree
+" Track the engine.
+Plug 'SirVer/ultisnips'
+
+ " Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
+
+"2015 code snippets (Optional) 
+Plug 'epilande/vim-es2015-snippets'  
+
+" React code snippets 
+Plug 'epilande/vim-react-snippets'
+
+" Nerd Tree
 Plug 'scrooloose/nerdtree'
 
 "Vim Surround
@@ -42,7 +51,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'leafgarland/typescript-vim'
 
 "Colorscheme
-Plug 'sjl/badwolf'
+Plug 'kristijanhusak/vim-hybrid-material'
 
 "Vim-sessions for easy session management
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
@@ -50,6 +59,15 @@ Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 " Initialize plugin system
 call plug#end()
 
+
+
+
+ let g:UltiSnipsExpandTrigger="<tab>"
+ let g:UltiSnipsJumpForwardTrigger="<c-b>"
+ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+ " If you want :UltiSnipsEdit to split your window.
+ let g:UltiSnipsEditSplit="vertical"
 
 
 
@@ -77,8 +95,8 @@ let NERDTreeIgnore = ['\.pyc$','node_modules']
 """""""""" Basic Configuration
 syntax enable 
 set rnu
-set showcmd
 set cursorline
+set showcmd
 set wildmenu
 set showmatch
 set incsearch
@@ -94,7 +112,10 @@ set backup
 set undofile
 set backupdir=~/.vim/dirs/backup
 set undodir=~/.vim/dirs/undo
-set backspace=indent,eol,start
+set backspace=2
+
+
+hi CursorLine term=bold cterm=bold guibg=Grey40
 
 if !isdirectory(&backupdir)
 	call mkdir(&backupdir, "p")
@@ -111,7 +132,8 @@ if !has("gui_running")
 	set t_Co=256
 	let &t_AB="\e[48;5;%dm"
 	let &t_AF="\e[38;5;%dm"
-	colorscheme badwolf
+	set background=dark
+	colorscheme hybrid_reverse 
 endif
 
 if has("gui_running")
@@ -124,10 +146,23 @@ if has("gui_running")
 	endif
 endif
 
+"CMDER fix
+inoremap <Char-0x07F> <BS>
+nnoremap <Char-0x07F> <BS>
+
+
+
+
+
+
+
+
+
+
 
 """""""""" Basic MAPPINGS 
 let mapleader = " "
-
+			
 " turn off search highlight 
 nnoremap <leader><space> :nohlsearch<CR>
 
@@ -142,8 +177,6 @@ nnoremap <silent> <c-k> <c-w>k
 nnoremap <silent> <leader>\ <c-^>
 
 
-" wrap word
-nnoremap <leader>w ysiw
 
 " delete line
 nnoremap <leader>d dd

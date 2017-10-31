@@ -1,3 +1,4 @@
+
 " Download vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))   
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -19,9 +20,6 @@ call plug#begin('~/.vim/plugged')
 
 "vim-easy-align"
 Plug 'junegunn/vim-easy-align'
-
-" Vim-Snipmate for snippets
-"Plug 'garbas/vim-snipmate'| Plug 'tomtom/tlib_vim'| Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'honza/vim-snippets'
 
 " Track the engine.
 Plug 'SirVer/ultisnips'
@@ -56,13 +54,32 @@ Plug 'kristijanhusak/vim-hybrid-material'
 "Vim-sessions for easy session management
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
 
+
+function! Installjshint(info)
+	if a:info.status == 'installed' || a:info.force
+		!npm install -g jshint
+	endif
+endfunction
+
+" Linters 
+Plug 'scrooloose/syntastic', { 'do': function('Installjshint') }
+
+" YouCompleteMe for code completeion
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' }
+
+Plug 'pangloss/vim-javascript' | Plug 'mxw/vim-jsx'
+
 " Initialize plugin system
 call plug#end()
 
 
+"""Sessions
+let g:session_autoload = 'no'
 
 
- let g:UltiSnipsExpandTrigger="<tab>"
+
+"""UltiSnips
+ let g:UltiSnipsExpandTrigger="<c-j>"
  let g:UltiSnipsJumpForwardTrigger="<c-b>"
  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
@@ -71,6 +88,18 @@ call plug#end()
 
 
 
+
+ """Syntastic
+ set statusline+=%#warningmsg#
+ set statusline+=%{SyntasticStatuslineFlag()}
+ set statusline+=%*
+
+ let g:syntastic_always_populate_loc_list = 1
+ let g:syntastic_auto_loc_list = 1
+ let g:syntastic_check_on_open = 1
+ let g:syntastic_check_on_wq = 0
+
+ let g:syntastic_javascript_checkers=['eslint']
 
 
 
@@ -83,6 +112,9 @@ nnoremap <silent> <F5> :NERDTreeFind<CR>
 
 let NERDTreeIgnore = ['\.pyc$','node_modules']
 
+
+""" JSX - REACT 
+let g:jsx_ext_required = 0
 
 
 
@@ -113,8 +145,8 @@ set undofile
 set backupdir=~/.vim/dirs/backup
 set undodir=~/.vim/dirs/undo
 set backspace=2
-
-
+set encoding=utf-8
+set tabstop=4
 hi CursorLine term=bold cterm=bold guibg=Grey40
 
 if !isdirectory(&backupdir)

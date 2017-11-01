@@ -18,9 +18,6 @@ autocmd! bufwritepost .vimrc source %
 """""""""" Pluggins 
 call plug#begin('~/.vim/plugged')
 
-"vim-easy-align"
-Plug 'junegunn/vim-easy-align'
-
 " Track the engine.
 Plug 'SirVer/ultisnips'
 
@@ -63,11 +60,12 @@ endfunction
 
 " Linters 
 Plug 'scrooloose/syntastic', { 'do': function('Installjshint') }
-
 " YouCompleteMe for code completeion
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' }
 
 Plug 'pangloss/vim-javascript' | Plug 'mxw/vim-jsx'
+
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -117,7 +115,10 @@ let NERDTreeIgnore = ['\.pyc$','node_modules']
 let g:jsx_ext_required = 0
 
 
-
+""" CTRLP
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+let g:ctrlp_working_path_mode = 0
 
 
 

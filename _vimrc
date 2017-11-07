@@ -18,6 +18,10 @@ autocmd! bufwritepost .vimrc source %
 """""""""" Pluggins 
 call plug#begin('~/.vim/plugged')
 
+
+" Easy motion for faster file navigation
+Plug 'easymotion/vim-easymotion'
+
 " Track the engine.
 Plug 'SirVer/ultisnips'
 

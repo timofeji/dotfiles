@@ -21,11 +21,8 @@ call plug#begin('~/.vim/plugged')
 " Track the engine.
 Plug 'SirVer/ultisnips'
 
- " Snippets are separated from the engine. Add this if you want them:
+" Generic Snippets for all languages
 Plug 'honza/vim-snippets'
-
-"2015 code snippets (Optional) 
-Plug 'epilande/vim-es2015-snippets'  
 
 " React code snippets 
 Plug 'epilande/vim-react-snippets'
@@ -46,10 +43,18 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'leafgarland/typescript-vim'
 
 "Colorscheme
-Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'josuegaleas/jay'
 
 "Vim-sessions for easy session management
 Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
+
+"Vim airline
+Plug 'vim-airline/vim-airline'
+
+"Command-T for fuzzy file search
+Plug 'wincent/command-t', {
+    \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
+    \ }
 
 
 function! Installjshint(info)
@@ -57,15 +62,13 @@ function! Installjshint(info)
 		!npm install -g jshint
 	endif
 endfunction
-
-" Linters 
+" Syntastic for hilighting
 Plug 'scrooloose/syntastic', { 'do': function('Installjshint') }
+
 " YouCompleteMe for code completeion
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' }
 
-Plug 'pangloss/vim-javascript' | Plug 'mxw/vim-jsx'
 
-Plug 'ctrlpvim/ctrlp.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -166,7 +169,7 @@ if !has("gui_running")
 	let &t_AB="\e[48;5;%dm"
 	let &t_AF="\e[38;5;%dm"
 	set background=dark
-	colorscheme hybrid_reverse 
+	colorscheme jay 
 endif
 
 if has("gui_running")
@@ -182,6 +185,10 @@ endif
 "CMDER fix
 inoremap <Char-0x07F> <BS>
 nnoremap <Char-0x07F> <BS>
+
+
+
+let s:ruby_path = 'C:\Ruby187\bin'
 
 
 

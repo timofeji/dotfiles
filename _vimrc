@@ -107,6 +107,8 @@ let g:session_autoload = 'no'
  let g:syntastic_javascript_checkers=['eslint']
 
 
+"""" Command-T
+set wildignore+=node_modules/*
 
 
 
@@ -118,17 +120,15 @@ nnoremap <silent> <F5> :NERDTreeFind<CR>
 let NERDTreeIgnore = ['\.pyc$','node_modules']
 
 
-""" JSX - REACT 
-let g:jsx_ext_required = 0
+""" EasyMotion
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+nmap s <Plug>(easymotion-overwin-f)
 
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
 
-""" CTRLP
-set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-let g:ctrlp_working_path_mode = 0
-
-
-
+" Move to word
+nnoremap <leader>w <Plug>(easymotion-w)
 
 
 
@@ -218,7 +218,8 @@ nnoremap <silent> <c-l> <c-w>l
 nnoremap <silent> <c-j> <c-w>j
 nnoremap <silent> <c-h> <c-w>h
 nnoremap <silent> <c-k> <c-w>k
-nnoremap <silent> <leader>\ <c-^>
+nnoremap <silent> jleader>\ <c-^>
+
 
 
 

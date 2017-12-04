@@ -28,23 +28,20 @@ Plug 'SirVer/ultisnips'
 " Generic Snippets for all languages
 Plug 'honza/vim-snippets'
 
-" React code snippets 
-Plug 'epilande/vim-react-snippets'
-
 " Nerd Tree
 Plug 'scrooloose/nerdtree'
 
 "Vim Surround
 Plug 'tpope/vim-surround' 
 
+"Vim Dispatch
+Plug 'tpope/vim-dispatch'
+
 "Git Gutter
 Plug 'airblade/vim-gitgutter'
 
 "Code commenting
 Plug 'scrooloose/nerdcommenter'
-
-"Typescript Supports
-Plug 'leafgarland/typescript-vim'
 
 "Colorscheme
 Plug 'josuegaleas/jay'
@@ -66,15 +63,25 @@ function! Installjshint(info)
 		!npm install -g jshint
 	endif
 endfunction
-" Syntastic for hilighting
+
+" Syntastic for syntax checking
 Plug 'scrooloose/syntastic', { 'do': function('Installjshint') }
 
-" YouCompleteMe for code completeion
+
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' }
 
 
 
-" Initialize plugin system
+""" Languages support
+"Typescript Supports
+Plug 'leafgarland/typescript-vim'
+
+"GDScript Support
+Plug 'quabug/vim-gdscript'
+
+"C# Support
+Plug 'OmniSharp/omnisharp-vim'
+
 call plug#end()
 
 
@@ -105,10 +112,17 @@ let g:session_autoload = 'no'
  let g:syntastic_check_on_wq = 0
 
  let g:syntastic_javascript_checkers=['eslint']
+ let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
 
 
 """" Command-T
 set wildignore+=node_modules/*
+
+
+
+
+"""" OmniSharp
+let g:OmniSharp_want_snippet=1
 
 
 
@@ -157,6 +171,8 @@ set encoding=utf-8
 set tabstop=4
 hi CursorLine term=bold cterm=bold guibg=Grey40
 
+filetype plugin on
+
 if !isdirectory(&backupdir)
 	call mkdir(&backupdir, "p")
 endif
@@ -195,15 +211,6 @@ nnoremap <Char-0x07F> <BS>
 let s:ruby_path = 'C:\Ruby187\bin'
 
 
-
-
-
-
-
-
-
-
-
 """""""""" Basic MAPPINGS 
 let mapleader = " "
 			
@@ -218,13 +225,8 @@ nnoremap <silent> <c-l> <c-w>l
 nnoremap <silent> <c-j> <c-w>j
 nnoremap <silent> <c-h> <c-w>h
 nnoremap <silent> <c-k> <c-w>k
-nnoremap <silent> jleader>\ <c-^>
+nnoremap <silent> <leader>\ <c-^>
 
-
-
-
-" delete line
-nnoremap <leader>d dd
 
 :command! Q q
 :command! W w

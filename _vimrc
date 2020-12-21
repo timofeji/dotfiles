@@ -1,152 +1,55 @@
 
-" Download vim-plug
-if empty(glob('~/.vim/autoload/plug.vim'))   
-	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim   
-	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC 
-endif
-
-"Auto reload of vimrc
-autocmd! bufwritepost .vimrc source %
-
-
-
-
-
-
+" Automatically source vimrc on save.
+autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 
 """""""""" Pluggins 
 call plug#begin('~/.vim/plugged')
+Plug 'sheerun/vim-polyglot'
+" File Explorer
+Plug 'scrooloose/NERDTree'
+" Auto pairs for '(' '[' '{{}{'
+Plug 'jiangmiao/auto-pairs'
+"Git Gutter
+Plug 'airblade/vim-gitgutter'
 
+Plug 'jacoborus/tender.vim'
+"Code commenting
+Plug 'scrooloose/nerdcommenter'
+"Vim airline
+Plug 'vim-airline/vim-airline'
 
 " Easy motion for faster file navigation
 Plug 'easymotion/vim-easymotion'
 
-" Track the engine.
-Plug 'SirVer/ultisnips'
-
-" Generic Snippets for all languages
-Plug 'honza/vim-snippets'
-
-" Nerd Tree
-Plug 'scrooloose/nerdtree'
-
 "Vim Surround
 Plug 'tpope/vim-surround' 
 
-"Vim Dispatch
-Plug 'tpope/vim-dispatch'
+"FZF fuzzy search
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
-"Git Gutter
-Plug 'airblade/vim-gitgutter'
+"Colorscheme  
+Plug 'nanotech/jellybeans.vim'
 
-"Code commenting
-Plug 'scrooloose/nerdcommenter'
+" Or build from source code by using yarn: https://yarnpkg.com
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 
-"Colorscheme
-Plug 'josuegaleas/jay'
-
-"Vim-sessions for easy session management
-Plug 'xolox/vim-session' | Plug 'xolox/vim-misc'
-
-"Vim airline
-Plug 'vim-airline/vim-airline'
-
-"Command-T for fuzzy file search
-Plug 'wincent/command-t', {
-    \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
-    \ }
-
-
-function! Installjshint(info)
-	if a:info.status == 'installed' || a:info.force
-		!npm install -g jshint
-	endif
-endfunction
-
-" Syntastic for syntax checking
-Plug 'scrooloose/syntastic', { 'do': function('Installjshint') }
-
-
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' }
-
-
-
-""" Languages support
-"Typescript Supports
-Plug 'leafgarland/typescript-vim'
-
-"GDScript Support
-Plug 'quabug/vim-gdscript'
-
-"C# Support
-Plug 'OmniSharp/omnisharp-vim'
+Plug 'tomlion/vim-solidity'
 
 call plug#end()
 
 
-"""Sessions
-let g:session_autoload = 'no'
+""Color scheme settings"
+let g:jellybeans_overrides = {
+      \    'background': { 'ctermbg': 'none', '256ctermbg': 'none' },
+      \}
+if has('termguicolors') && &termguicolors
+  let g:jellybeans_overrides['background']['guibg'] = 'none'
+endif
 
 
 
-"""UltiSnips
- let g:UltiSnipsExpandTrigger="<c-j>"
- let g:UltiSnipsJumpForwardTrigger="<c-b>"
- let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
- " If you want :UltiSnipsEdit to split your window.
- let g:UltiSnipsEditSplit="vertical"
-
-
-
-
- """Syntastic
- set statusline+=%#warningmsg#
- set statusline+=%{SyntasticStatuslineFlag()}
- set statusline+=%*
-
- let g:syntastic_always_populate_loc_list = 1
- let g:syntastic_auto_loc_list = 1
- let g:syntastic_check_on_open = 1
- let g:syntastic_check_on_wq = 0
-
- let g:syntastic_javascript_checkers=['eslint']
- let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
-
-
-"""" Command-T
-set wildignore+=node_modules/*
-
-
-
-
-"""" OmniSharp
-let g:OmniSharp_want_snippet=1
-
-
-
-
-""""NerdTree
-nnoremap <silent> <F4> :NERDTreeToggle<CR>
-nnoremap <silent> <F5> :NERDTreeFind<CR>
-
-let NERDTreeIgnore = ['\.pyc$','node_modules']
-
-
-""" EasyMotion
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-nmap s <Plug>(easymotion-overwin-f)
-
-" Turn on case insensitive feature
-let g:EasyMotion_smartcase = 1
-
-" Move to word
-nnoremap <leader>w <Plug>(easymotion-w)
-
-
-
-"""""""""" Basic Configuration
+""Generic settings"
 syntax enable 
 set rnu
 set cursorline
@@ -157,75 +60,102 @@ set incsearch
 set hlsearch
 set ignorecase
 set smartindent
-set nopaste
 set autoindent
 set breakindent
 set smarttab
 set noswapfile
-set backup
 set undofile
-set backupdir=~/.vim/dirs/backup
-set undodir=~/.vim/dirs/undo
 set backspace=2
 set encoding=utf-8
 set tabstop=4
-hi CursorLine term=bold cterm=bold guibg=Grey40
 
-filetype plugin on
+""PLUGIN CUSTOMIZATIOn"
 
-if !isdirectory(&backupdir)
-	call mkdir(&backupdir, "p")
+""""""""COC""""""""
+" Symbol renaming.
+nmap <space>rn <Plug>(coc-rename)
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
 endif
-if !isdirectory(&undodir)
-	call mkdir(&undodir, "p")
-endif
-set rtp+=~/.vim
 
 
-"" Make sure we can use our colorscheme
+let g:airline#extensions#tabline#enanled = 1
+
+
+"FZF
+nnoremap <silent> <space>f :Files<CR>
+nnoremap <silent> <space>t :Rg<CR>
+
+""" EasyMotion
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+nmap s <Plug>(easymotion-overwin-f)
+
+" Move to word
+nnoremap <space>w <Plug>(easymotion-w)
+
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+""""NerdTree
+
+set autochdir
+let NERDTreeChDirMode=2
+nnoremap <silent> <space>n :NERDTreeToggle . <CR>
+nnoremap <silent> <F5> :NERDTreeFind<CR>
+
+let NERDTreeIgnore = ['\.pyc$','node_modules']
+
+
+
+" Make sure we can use our colorscheme
 if !has("gui_running")
-	set term=xterm
-	set t_Co=256
-	let &t_AB="\e[48;5;%dm"
-	let &t_AF="\e[38;5;%dm"
-	set background=dark
-	colorscheme jay 
+  set t_Co=256
+  let &t_AB="\e[48;5;%dm"
+  let &t_AF="\e[38;5;%dm"
+  colorscheme jellybeans
+  set guifont=Consolas:h11:cANSI
 endif
+
 
 if has("gui_running")
-	if has("gui_gtk2")
-		set guifont=Inconsolata\ 12
-	elseif has("gui_macvim")
-		set guifont=Menlo\ Regular:h14
-	elseif has("gui_win32")
-		set guifont=Consolas:h11:cANSI
-	endif
+  if has("gui_gtk2")
+    set guifont=Inconsolata\ 12
+  elseif has("gui_macvim")
+    set guifont=Menlo\ Regular:h14
+  elseif has("gui_win32")
+    set guifont=Consolas:h11:cANSI
+  endif
 endif
 
-"CMDER fix
-inoremap <Char-0x07F> <BS>
-nnoremap <Char-0x07F> <BS>
-
-
-
-let s:ruby_path = 'C:\Ruby187\bin'
 
 
 """""""""" Basic MAPPINGS 
 let mapleader = " "
-			
-" turn off search highlight 
-nnoremap <leader><space> :nohlsearch<CR>
 
 " toggle between rnu and number
 nnoremap <C-n> :call ToggleNumber()<CR>
 
-" easy window navigation
+" Move to word
+nnoremap <leader>w <Plug>(easymotion-w)
+
+
+"easy window navigation
 nnoremap <silent> <c-l> <c-w>l
 nnoremap <silent> <c-j> <c-w>j
 nnoremap <silent> <c-h> <c-w>h
 nnoremap <silent> <c-k> <c-w>k
 nnoremap <silent> <leader>\ <c-^>
+
+nnoremap <silent> <leader>/ <leader>ci
 
 
 :command! Q q
@@ -236,13 +166,10 @@ nnoremap <silent> <leader>\ <c-^>
 
 " toggle between number and relativenumber
 function! ToggleNumber()
-	if(&relativenumber == 1)
-		set norelativenumber
-		set number
-	else
-		set relativenumber
-	endif
-endfunc
-
-
-
+  if(&relativenumber == 1)
+    set norelativenumber
+    set number
+  else
+    set relativenumber
+  endif
+e
